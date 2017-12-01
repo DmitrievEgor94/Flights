@@ -17,8 +17,11 @@ public class ServicePassengerImpl extends AbstractService<Passenger> implements 
     }
 
     @Override
-    public boolean checkObject(Passenger ob) {
-        return ob.getLastName() != null && ob.getFirstName() != null;
+    public String checkObject(Passenger ob) {
+        if ((ob.getLastName() == null) || (ob.getFirstName() == null)) {
+            return ErrorMessages.FILL_FIELDS_MESSAGE;
+        }
+        return null;
     }
 
     @Override

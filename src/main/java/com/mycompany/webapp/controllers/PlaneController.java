@@ -7,76 +7,64 @@ import com.mycompany.webapp.services.impl.ServicePlaneImpl;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
-import java.util.List;
 
 @Path("/planes")
-public class PlaneController implements ControllersConstants {
+public class PlaneController {
 
     private ServicePlane servicePlane = new ServicePlaneImpl();
 
-    @POST
+    @PUT
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response update(Plane plane) {
+    public Response update(Plane Plane) {
+        String updateMessage = servicePlane.update(Plane);
 
-        if (plane.getId() == ABSENT_ID) {
-            return Response.status(ERROR_UPDATING).entity(MESSAGE_UPDATE_ID).build();
+        if (updateMessage == null) {
+            return Response.status(Response.Status.OK).build();
         } else {
-            boolean isUpdated = servicePlane.update(plane);
-            if (isUpdated) {
-                return Response.status(SUCCESS_STATUS).entity(SUCCESS_UPDATE).build();
-            } else {
-                return Response.status(ERROR_UPDATING).entity(MESSAGE_FILL_FIELDS).build();
-            }
+            return Response.status(Response.Status.BAD_REQUEST).entity(updateMessage).build();
         }
     }
 
-    @PUT
-    @Consumes(MediaType.APPLICATION_JSON)
-    public Response save(Plane plane) {
-        if (plane.getId() != ABSENT_ID) {
-            return Response.status(ERROR_SAVING).entity(WARNING_ID).build();
+    @POST
+    public Response save(Plane Plane) {
+        String saveMessage = servicePlane.save(Plane);
+
+        if (saveMessage == null) {
+            return Response.status(Response.Status.CREATED).build();
         } else {
-
-            boolean isSaved = servicePlane.save(plane);
-
-            if (isSaved) {
-                return Response.status(SUCCESS_STATUS).entity(SUCCESS_SAVING).build();
-            } else {
-                return Response.status(ERROR_SAVING).entity(MESSAGE_FILL_FIELDS).build();
-            }
+            return Response.status(Response.Status.BAD_REQUEST).entity(saveMessage).build();
         }
     }
 
     @GET
     @Path(value = "/{id}")
     @Produces(MediaType.APPLICATION_JSON)
-    public Plane get(@PathParam(value = "id") long id) {
-        return servicePlane.read(id);
+    public Response get(@PathParam(value = "id") long id) {
+        return Response.status(Response.Status.OK).entity(servicePlane.read(id)).build();
     }
 
     @DELETE
     @Path(value = "/{id}")
     public Response delete(@PathParam(value = "id") long id) {
-        Plane plane = servicePlane.read(id);
-
-        if (plane == null) {
-            return Response.status(ERROR_DELETE).entity(MESSAGE_DELETE_ENTITY).build();
+        if (servicePlane.delete(id)) {
+            return Response.status(Response.Status.OK).build();
         } else {
-            servicePlane.delete(id);
-            return Response.status(SUCCESS_STATUS).entity(SUCCESS_DELETE).build();
+            return Response.status(Response.Status.NO_CONTENT).build();
         }
     }
 
     @GET
     @Path("/amount")
     public Response getNumberOfEntities() {
-        return Response.status(SUCCESS_STATUS).entity(servicePlane.getNumberOfEntities()).build();
+        return Response.status(Response.Status.OK)
+                .entity(servicePlane.getNumberOfEntities()).build();
     }
 
     @GET
     @Path("/{firstId}-{lastId}")
     @Produces(MediaType.APPLICATION_JSON)
-    public List<Plane> getList(@PathParam(value = "firstId") long firstId, @PathParam(value = "lastId") long lastId) {
-        return servicePlane.readAll(firstId, lastId);
+    public Response getList(@PathParam(value = "firstId") long firstId, @PathParam(value = "lastId") long lastId) {
+        return Response.status(Response.Status.OK)
+                .entity(servicePlane.readAll(firstId, lastId)).build();
     }
 }

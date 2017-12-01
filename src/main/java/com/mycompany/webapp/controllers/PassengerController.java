@@ -7,76 +7,64 @@ import com.mycompany.webapp.services.impl.ServicePassengerImpl;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
-import java.util.List;
 
 @Path("/passengers")
-public class PassengerController implements ControllersConstants {
+public class PassengerController {
 
     private ServicePassenger servicePassenger = new ServicePassengerImpl();
 
-    @POST
+    @PUT
     @Consumes(MediaType.APPLICATION_JSON)
     public Response update(Passenger passenger) {
+        String updateMessage = servicePassenger.update(passenger);
 
-        if (passenger.getId() == ABSENT_ID) {
-            return Response.status(ERROR_UPDATING).entity(MESSAGE_UPDATE_ID).build();
+        if (updateMessage == null) {
+            return Response.status(Response.Status.OK).build();
         } else {
-            boolean isUpdated = servicePassenger.update(passenger);
-            if (isUpdated) {
-                return Response.status(SUCCESS_STATUS).entity(SUCCESS_UPDATE).build();
-            } else {
-                return Response.status(ERROR_UPDATING).entity(MESSAGE_FILL_FIELDS).build();
-            }
+            return Response.status(Response.Status.BAD_REQUEST).entity(updateMessage).build();
         }
     }
 
-    @PUT
-    @Consumes(MediaType.APPLICATION_JSON)
+    @POST
     public Response save(Passenger passenger) {
-        if (passenger.getId() != ABSENT_ID) {
-            return Response.status(ERROR_SAVING).entity(WARNING_ID).build();
+        String saveMessage = servicePassenger.save(passenger);
+
+        if (saveMessage == null) {
+            return Response.status(Response.Status.CREATED).build();
         } else {
-
-            boolean isSaved = servicePassenger.save(passenger);
-
-            if (isSaved) {
-                return Response.status(SUCCESS_STATUS).entity(SUCCESS_SAVING).build();
-            } else {
-                return Response.status(ERROR_SAVING).entity(MESSAGE_FILL_FIELDS).build();
-            }
+            return Response.status(Response.Status.BAD_REQUEST).entity(saveMessage).build();
         }
     }
 
     @GET
     @Path(value = "/{id}")
     @Produces(MediaType.APPLICATION_JSON)
-    public Passenger get(@PathParam(value = "id") long id) {
-        return servicePassenger.read(id);
+    public Response get(@PathParam(value = "id") long id) {
+        return Response.status(Response.Status.OK).entity(servicePassenger.read(id)).build();
     }
 
     @DELETE
     @Path(value = "/{id}")
     public Response delete(@PathParam(value = "id") long id) {
-        Passenger passenger = servicePassenger.read(id);
-
-        if (passenger == null) {
-            return Response.status(ERROR_DELETE).entity(MESSAGE_DELETE_ENTITY).build();
+        if (servicePassenger.delete(id)) {
+            return Response.status(Response.Status.OK).build();
         } else {
-            servicePassenger.delete(id);
-            return Response.status(SUCCESS_STATUS).entity(SUCCESS_DELETE).build();
+            return Response.status(Response.Status.NO_CONTENT).build();
         }
     }
 
     @GET
     @Path("/amount")
     public Response getNumberOfEntities() {
-        return Response.status(SUCCESS_STATUS).entity(servicePassenger.getNumberOfEntities()).build();
+        return Response.status(Response.Status.OK)
+                .entity(servicePassenger.getNumberOfEntities()).build();
     }
 
     @GET
     @Path("/{firstId}-{lastId}")
     @Produces(MediaType.APPLICATION_JSON)
-    public List<Passenger> getList(@PathParam(value = "firstId") long firstId, @PathParam(value = "lastId") long lastId) {
-        return servicePassenger.readAll(firstId, lastId);
+    public Response getList(@PathParam(value = "firstId") long firstId, @PathParam(value = "lastId") long lastId) {
+        return Response.status(Response.Status.OK)
+                .entity(servicePassenger.readAll(firstId, lastId)).build();
     }
 }

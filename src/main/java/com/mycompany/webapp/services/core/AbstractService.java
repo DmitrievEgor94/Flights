@@ -9,23 +9,25 @@ public abstract class AbstractService<T> implements ServiceForCrudOperations<T> 
     private CrudOperations<T> crudOperator;
 
     @Override
-    public boolean update(T ob) {
-        if (checkObject(ob)) {
+    public String update(T ob) {
+        String errorMessage = checkObject(ob);
+
+        if (errorMessage == null) {
             crudOperator.update(ob);
-            return true;
-        } else {
-            return false;
         }
+
+        return errorMessage;
     }
 
     @Override
-    public boolean save(T ob) {
-        if (checkObject(ob)) {
-            crudOperator.save(ob);
-            return true;
-        } else {
-            return false;
+    public String save(T ob) {
+        String errorMessage = checkObject(ob);
+
+        if (errorMessage == null) {
+            crudOperator.update(ob);
         }
+
+        return errorMessage;
     }
 
     @Override
@@ -34,9 +36,15 @@ public abstract class AbstractService<T> implements ServiceForCrudOperations<T> 
     }
 
     @Override
-    public void delete(long id) {
+    public boolean delete(long id) {
         T ob = crudOperator.findById(id);
-        crudOperator.delete(ob);
+
+        if (ob != null) {
+            crudOperator.delete(ob);
+            return true;
+        }
+
+        return false;
     }
 
     @Override
@@ -53,5 +61,5 @@ public abstract class AbstractService<T> implements ServiceForCrudOperations<T> 
         this.crudOperator = crudOperator;
     }
 
-    abstract public boolean checkObject(T ob);
+    abstract public String checkObject(T ob);
 }

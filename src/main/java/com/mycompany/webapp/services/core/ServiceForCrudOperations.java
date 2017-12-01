@@ -4,15 +4,15 @@ import java.util.List;
 
 public interface ServiceForCrudOperations<T> {
 
-    boolean save(T ob);
+    String save(T ob);
 
     List<T> readAll(long firstPositionId, long lastPositionId);
 
-    boolean update(T ob);
+    String update(T ob);
 
     T read(long id);
 
-    void delete(long id);
+    boolean delete(long id);
 
     long getNumberOfEntities();
 }

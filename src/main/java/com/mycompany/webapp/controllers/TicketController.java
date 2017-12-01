@@ -7,78 +7,65 @@ import com.mycompany.webapp.services.impl.ServiceTicketImpl;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
-import java.util.List;
 
 @Path("/tickets")
-public class TicketController implements ControllersConstants {
+public class TicketController {
 
     private ServiceTicket serviceTicket = new ServiceTicketImpl();
 
-    @POST
+    @PUT
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response update(Ticket ticket) {
+    public Response update(Ticket Ticket) {
+        String updateMessage = serviceTicket.update(Ticket);
 
-        if (ticket.getId() == ABSENT_ID) {
-            return Response.status(ERROR_UPDATING).entity(MESSAGE_UPDATE_ID).build();
+        if (updateMessage == null) {
+            return Response.status(Response.Status.OK).build();
         } else {
-            boolean isUpdated = serviceTicket.update(ticket);
-            if (isUpdated) {
-                return Response.status(SUCCESS_STATUS).entity(SUCCESS_UPDATE).build();
-            } else {
-                return Response.status(ERROR_UPDATING).entity(MESSAGE_FILL_FIELDS).build();
-            }
+            return Response.status(Response.Status.BAD_REQUEST).entity(updateMessage).build();
         }
     }
 
-    @PUT
-    @Consumes(MediaType.APPLICATION_JSON)
-    public Response save(Ticket ticket) {
+    @POST
+    public Response save(Ticket Ticket) {
+        String saveMessage = serviceTicket.save(Ticket);
 
-        if (ticket.getId() != ABSENT_ID) {
-            return Response.status(ERROR_SAVING).entity(WARNING_ID).build();
+        if (saveMessage == null) {
+            return Response.status(Response.Status.CREATED).build();
         } else {
-
-            boolean isSaved = serviceTicket.save(ticket);
-
-            if (isSaved) {
-                return Response.status(SUCCESS_STATUS).entity(SUCCESS_SAVING).build();
-            } else {
-                return Response.status(ERROR_SAVING).entity(MESSAGE_FILL_FIELDS).build();
-            }
+            return Response.status(Response.Status.BAD_REQUEST).entity(saveMessage).build();
         }
     }
 
     @GET
     @Path(value = "/{id}")
     @Produces(MediaType.APPLICATION_JSON)
-    public Ticket get(@PathParam(value = "id") long id) {
-        return serviceTicket.read(id);
+    public Response get(@PathParam(value = "id") long id) {
+        return Response.status(Response.Status.OK).entity(serviceTicket.read(id)).build();
     }
 
     @DELETE
     @Path(value = "/{id}")
     public Response delete(@PathParam(value = "id") long id) {
-        Ticket ticket = serviceTicket.read(id);
-
-        if (ticket == null) {
-            return Response.status(ERROR_DELETE).entity(MESSAGE_DELETE_ENTITY).build();
+        if (serviceTicket.delete(id)) {
+            return Response.status(Response.Status.OK).build();
         } else {
-            serviceTicket.delete(id);
-            return Response.status(SUCCESS_STATUS).entity(SUCCESS_DELETE).build();
+            return Response.status(Response.Status.NO_CONTENT).build();
         }
     }
 
     @GET
     @Path("/amount")
     public Response getNumberOfEntities() {
-        return Response.status(SUCCESS_STATUS).entity(serviceTicket.getNumberOfEntities()).build();
+        return Response.status(Response.Status.OK)
+                .entity(serviceTicket.getNumberOfEntities()).build();
     }
 
     @GET
     @Path("/{firstId}-{lastId}")
     @Produces(MediaType.APPLICATION_JSON)
-    public List<Ticket> getList(@PathParam(value = "firstId") long firstId, @PathParam(value = "lastId") long lastId) {
-        return serviceTicket.readAll(firstId, lastId);
+    public Response getList(@PathParam(value = "firstId") long firstId, @PathParam(value = "lastId") long lastId) {
+        return Response.status(Response.Status.OK)
+                .entity(serviceTicket.readAll(firstId, lastId)).build();
     }
 
 }

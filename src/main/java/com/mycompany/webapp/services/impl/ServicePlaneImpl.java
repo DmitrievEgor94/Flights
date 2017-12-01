@@ -18,8 +18,12 @@ public class ServicePlaneImpl extends AbstractService<Plane> implements ServiceP
     }
 
     @Override
-    public boolean checkObject(Plane ob) {
-        return ob.getPlaneNumber() != null;
+    public String checkObject(Plane ob) {
+        if (ob.getPlaneNumber() == null) {
+            return ErrorMessages.FILL_FIELDS_MESSAGE;
+        }
+
+        return null;
     }
 
     @Override
