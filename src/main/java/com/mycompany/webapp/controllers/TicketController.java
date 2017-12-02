@@ -63,7 +63,7 @@ public class TicketController {
     }
 
     @GET
-    @Path("/{firstId}-{lastId}")
+    @Path("/get")
     @Produces(MediaType.APPLICATION_JSON)
     public Response getList(@QueryParam("from") long firstId, @QueryParam("to") long lastId) {
         List<Ticket> tickets = serviceTicket.readAll(firstId, lastId);

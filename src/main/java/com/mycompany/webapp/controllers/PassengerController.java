@@ -63,7 +63,7 @@ public class PassengerController {
     }
 
     @GET
-    @Path("/{firstId}-{lastId}")
+    @Path("/get")
     @Produces(MediaType.APPLICATION_JSON)
     public Response getList(@QueryParam("from") long firstId, @QueryParam("to") long lastId) {
         List<Passenger> passengers = servicePassenger.readAll(firstId, lastId);

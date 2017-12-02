@@ -64,7 +64,7 @@ public class FlightController {
     }
 
     @GET
-    @Path("/{firstId}-{lastId}")
+    @Path("/get")
     @Produces(MediaType.APPLICATION_JSON)
     public Response getList(@QueryParam("from") long firstId, @QueryParam("to") long lastId) {
         List<Flight> flights = serviceFlight.readAll(firstId, lastId);
