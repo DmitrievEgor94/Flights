@@ -40,17 +40,18 @@ public class TicketController {
     @Path(value = "/{id}")
     @Produces(MediaType.APPLICATION_JSON)
     public Response get(@PathParam(value = "id") long id) {
-        return Response.status(Response.Status.OK).entity(serviceTicket.read(id)).build();
+        if (serviceTicket.read(id) == null) {
+            return Response.status(Response.Status.NOT_FOUND).build();
+        } else {
+            return Response.status(Response.Status.OK).entity(serviceTicket.read(id)).build();
+        }
     }
 
     @DELETE
     @Path(value = "/{id}")
     public Response delete(@PathParam(value = "id") long id) {
-        if (serviceTicket.delete(id)) {
-            return Response.status(Response.Status.OK).build();
-        } else {
-            return Response.status(Response.Status.NO_CONTENT).build();
-        }
+        serviceTicket.delete(id);
+        return Response.status(Response.Status.NO_CONTENT).build();
     }
 
     @GET

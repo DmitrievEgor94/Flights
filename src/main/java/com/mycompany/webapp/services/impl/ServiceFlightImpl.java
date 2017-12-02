@@ -26,7 +26,7 @@ public class ServiceFlightImpl extends AbstractService<Flight> implements Servic
             return ErrorMessages.FILL_FIELDS_MESSAGE;
         }
 
-        if (ob.getPlanes().size() != 0) {
+        if (ob.getPlanes() != null) {
             for (Plane plane : ob.getPlanes()) {
                 if (planeDao.findById(plane.getId()) == null) {
                     return ErrorMessages.PLANE_DOES_NOT_EXIST + " id:" + plane.getId();

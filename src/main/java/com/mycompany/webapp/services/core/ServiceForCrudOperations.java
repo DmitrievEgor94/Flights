@@ -12,7 +12,7 @@ public interface ServiceForCrudOperations<T> {
 
     T read(long id);
 
-    boolean delete(long id);
+    void delete(long id);
 
     long getNumberOfEntities();
 }

@@ -40,17 +40,18 @@ public class PlaneController {
     @Path(value = "/{id}")
     @Produces(MediaType.APPLICATION_JSON)
     public Response get(@PathParam(value = "id") long id) {
-        return Response.status(Response.Status.OK).entity(servicePlane.read(id)).build();
+        if (servicePlane.read(id) == null) {
+            return Response.status(Response.Status.NOT_FOUND).build();
+        } else {
+            return Response.status(Response.Status.OK).entity(servicePlane.read(id)).build();
+        }
     }
 
     @DELETE
     @Path(value = "/{id}")
     public Response delete(@PathParam(value = "id") long id) {
-        if (servicePlane.delete(id)) {
-            return Response.status(Response.Status.OK).build();
-        } else {
-            return Response.status(Response.Status.NO_CONTENT).build();
-        }
+        servicePlane.delete(id);
+        return Response.status(Response.Status.NO_CONTENT).build();
     }
 
     @GET

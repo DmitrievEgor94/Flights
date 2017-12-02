@@ -24,7 +24,7 @@ public abstract class AbstractService<T> implements ServiceForCrudOperations<T> 
         String errorMessage = checkObject(ob);
 
         if (errorMessage == null) {
-            crudOperator.update(ob);
+            crudOperator.save(ob);
         }
 
         return errorMessage;
@@ -36,15 +36,13 @@ public abstract class AbstractService<T> implements ServiceForCrudOperations<T> 
     }
 
     @Override
-    public boolean delete(long id) {
+    public void delete(long id) {
         T ob = crudOperator.findById(id);
 
         if (ob != null) {
             crudOperator.delete(ob);
-            return true;
         }
 
-        return false;
     }
 
     @Override
