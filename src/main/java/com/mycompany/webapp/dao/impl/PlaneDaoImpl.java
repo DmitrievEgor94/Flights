@@ -7,10 +7,10 @@ import com.mycompany.webapp.dao.core.PlaneDao;
 import com.mycompany.webapp.models.Flight;
 import com.mycompany.webapp.models.Passenger;
 import com.mycompany.webapp.models.Plane;
-import com.mycompany.webapp.models.Ticket;
 
 import javax.persistence.Query;
 import java.util.List;
+import java.util.Optional;
 
 public class PlaneDaoImpl extends AbstractDao<Plane> implements PlaneDao {
 
@@ -22,20 +22,18 @@ public class PlaneDaoImpl extends AbstractDao<Plane> implements PlaneDao {
 
     @Override
     public void delete(Plane plane) {
-        for (Ticket ticket : plane.getTickets()) {
-            ticket.getPassenger().getTickets().remove(ticket);
-            ticket.getFlight().getTickets().remove(ticket);
-        }
 
-        for (Flight flight : plane.getFlights()) {
-            super.entityManager.refresh(flight);
+        if (Optional.ofNullable(plane.getFlights()).isPresent()) {
+            for (Flight flight : plane.getFlights()) {
+                super.entityManager.refresh(flight);
 
-            flight.getPlanes().remove(plane);
+                flight.getPlanes().remove(plane);
 
-            if (flight.getPlanes().size() == 0) {
-                flightDao.delete(flight);
-            } else {
-                flightDao.update(flight);
+                if (flight.getPlanes().isEmpty()) {
+                    flightDao.delete(flight);
+                } else {
+                    flightDao.update(flight);
+                }
             }
         }
 

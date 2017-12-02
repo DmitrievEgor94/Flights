@@ -7,6 +7,7 @@ import com.mycompany.webapp.services.impl.ServiceTicketImpl;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import java.util.List;
 
 @Path("/tickets")
 public class TicketController {
@@ -15,8 +16,8 @@ public class TicketController {
 
     @PUT
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response update(Ticket Ticket) {
-        String updateMessage = serviceTicket.update(Ticket);
+    public Response update(Ticket ticket) {
+        String updateMessage = serviceTicket.update(ticket);
 
         if (updateMessage == null) {
             return Response.status(Response.Status.OK).build();
@@ -26,8 +27,8 @@ public class TicketController {
     }
 
     @POST
-    public Response save(Ticket Ticket) {
-        String saveMessage = serviceTicket.save(Ticket);
+    public Response save(Ticket ticket) {
+        String saveMessage = serviceTicket.save(ticket);
 
         if (saveMessage == null) {
             return Response.status(Response.Status.CREATED).build();
@@ -64,9 +65,13 @@ public class TicketController {
     @GET
     @Path("/{firstId}-{lastId}")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getList(@PathParam(value = "firstId") long firstId, @PathParam(value = "lastId") long lastId) {
-        return Response.status(Response.Status.OK)
-                .entity(serviceTicket.readAll(firstId, lastId)).build();
-    }
+    public Response getList(@QueryParam("from") long firstId, @QueryParam("to") long lastId) {
+        List<Ticket> tickets = serviceTicket.readAll(firstId, lastId);
 
+        if (tickets.isEmpty()) {
+            return Response.status(Response.Status.NOT_FOUND).build();
+        }
+        return Response.status(Response.Status.OK)
+                .entity(tickets).build();
+    }
 }

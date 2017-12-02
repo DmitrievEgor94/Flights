@@ -28,7 +28,9 @@ public class ServiceTicketImpl extends AbstractService<Ticket> implements Servic
 
     @Override
     public String checkObject(Ticket ticket) {
-        if ((ticket.getCost() == 0) || (ticket.getDate() == null) || ticket.getSeat() == 0) {
+        if ((ticket.getCost() == 0) || (ticket.getDate() == null) || (ticket.getSeat() == 0)
+                || (ticket.getPassenger() == null) || (ticket.getFlight() == null)
+                || (ticket.getPlane() == null)) {
             return ErrorMessages.FILL_FIELDS_MESSAGE;
         }
 

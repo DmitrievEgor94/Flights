@@ -11,6 +11,11 @@ import java.util.List;
 
 public class FlightDaoImpl extends AbstractDao<Flight> implements FlightDao {
 
+    private static final String CLASS_NAME = "Flight";
+
+    private static final String JQPL_FLIGHTS_FOR_PLANE = "SELECT f FROM " + CLASS_NAME + " f join f.planes p " +
+            " WHERE p.planeNumber = :planeNumber";
+
     public FlightDaoImpl() {
         super(Flight.class);
     }

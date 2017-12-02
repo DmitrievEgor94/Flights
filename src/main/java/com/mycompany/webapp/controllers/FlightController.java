@@ -7,6 +7,7 @@ import com.mycompany.webapp.services.impl.ServiceFlightImpl;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import java.util.List;
 
 @Path("/flights")
 public class FlightController {
@@ -65,8 +66,13 @@ public class FlightController {
     @GET
     @Path("/{firstId}-{lastId}")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getList(@PathParam(value = "firstId") long firstId, @PathParam(value = "lastId") long lastId) {
+    public Response getList(@QueryParam("from") long firstId, @QueryParam("to") long lastId) {
+        List<Flight> flights = serviceFlight.readAll(firstId, lastId);
+
+        if (flights.isEmpty()) {
+            return Response.status(Response.Status.NOT_FOUND).build();
+        }
         return Response.status(Response.Status.OK)
-                .entity(serviceFlight.readAll(firstId, lastId)).build();
+                .entity(flights).build();
     }
 }

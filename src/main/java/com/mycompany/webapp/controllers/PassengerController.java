@@ -7,6 +7,7 @@ import com.mycompany.webapp.services.impl.ServicePassengerImpl;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import java.util.List;
 
 @Path("/passengers")
 public class PassengerController {
@@ -64,8 +65,13 @@ public class PassengerController {
     @GET
     @Path("/{firstId}-{lastId}")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getList(@PathParam(value = "firstId") long firstId, @PathParam(value = "lastId") long lastId) {
+    public Response getList(@QueryParam("from") long firstId, @QueryParam("to") long lastId) {
+        List<Passenger> passengers = servicePassenger.readAll(firstId, lastId);
+
+        if (passengers.isEmpty()) {
+            return Response.status(Response.Status.NOT_FOUND).build();
+        }
         return Response.status(Response.Status.OK)
-                .entity(servicePassenger.readAll(firstId, lastId)).build();
+                .entity(passengers).build();
     }
 }

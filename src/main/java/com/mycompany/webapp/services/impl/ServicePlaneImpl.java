@@ -28,7 +28,7 @@ public class ServicePlaneImpl extends AbstractService<Plane> implements ServiceP
 
     @Override
     public List<Plane> getPlanesForPassenger(Passenger passenger) {
-        return null;
+        return planeDao.getPlanesForPassenger(passenger);
     }
 
 }

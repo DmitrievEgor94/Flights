@@ -10,6 +10,7 @@ import com.mycompany.webapp.services.core.AbstractService;
 import com.mycompany.webapp.services.core.ServiceFlight;
 
 import java.util.List;
+import java.util.Optional;
 
 public class ServiceFlightImpl extends AbstractService<Flight> implements ServiceFlight {
 
@@ -26,7 +27,8 @@ public class ServiceFlightImpl extends AbstractService<Flight> implements Servic
             return ErrorMessages.FILL_FIELDS_MESSAGE;
         }
 
-        if (ob.getPlanes() != null) {
+        if (Optional.ofNullable(ob.getPlanes()).isPresent()
+                && !ob.getPlanes().isEmpty()) {
             for (Plane plane : ob.getPlanes()) {
                 if (planeDao.findById(plane.getId()) == null) {
                     return ErrorMessages.PLANE_DOES_NOT_EXIST + " id:" + plane.getId();
@@ -37,7 +39,6 @@ public class ServiceFlightImpl extends AbstractService<Flight> implements Servic
         }
 
         return null;
-
     }
 
     @Override

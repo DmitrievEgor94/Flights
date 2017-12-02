@@ -59,5 +59,5 @@ public abstract class AbstractService<T> implements ServiceForCrudOperations<T> 
         this.crudOperator = crudOperator;
     }
 
-    abstract public String checkObject(T ob);
+    public abstract String checkObject(T ob);
 }

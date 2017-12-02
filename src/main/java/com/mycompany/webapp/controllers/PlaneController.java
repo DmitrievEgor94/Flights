@@ -7,6 +7,8 @@ import com.mycompany.webapp.services.impl.ServicePlaneImpl;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import java.util.List;
+
 
 @Path("/planes")
 public class PlaneController {
@@ -15,8 +17,8 @@ public class PlaneController {
 
     @PUT
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response update(Plane Plane) {
-        String updateMessage = servicePlane.update(Plane);
+    public Response update(Plane plane) {
+        String updateMessage = servicePlane.update(plane);
 
         if (updateMessage == null) {
             return Response.status(Response.Status.OK).build();
@@ -26,8 +28,8 @@ public class PlaneController {
     }
 
     @POST
-    public Response save(Plane Plane) {
-        String saveMessage = servicePlane.save(Plane);
+    public Response save(Plane plane) {
+        String saveMessage = servicePlane.save(plane);
 
         if (saveMessage == null) {
             return Response.status(Response.Status.CREATED).build();
@@ -62,10 +64,15 @@ public class PlaneController {
     }
 
     @GET
-    @Path("/{firstId}-{lastId}")
+    @Path("/get")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getList(@PathParam(value = "firstId") long firstId, @PathParam(value = "lastId") long lastId) {
+    public Response getList(@QueryParam("from") long firstId, @QueryParam("to") long lastId) {
+        List<Plane> planes = servicePlane.readAll(firstId, lastId);
+
+        if (planes.isEmpty()) {
+            return Response.status(Response.Status.NOT_FOUND).build();
+        }
         return Response.status(Response.Status.OK)
-                .entity(servicePlane.readAll(firstId, lastId)).build();
+                .entity(planes).build();
     }
 }
