@@ -12,6 +12,10 @@ public class Manager {
         ENTITY_MANAGER_FACTORY = Persistence.createEntityManagerFactory("flyings");
     }
 
+    private Manager() {
+
+    }
+
     public static EntityManager getEntityManager() {
         return ENTITY_MANAGER_FACTORY.createEntityManager();
     }
