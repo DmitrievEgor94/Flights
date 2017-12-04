@@ -5,16 +5,22 @@ import com.mycompany.webapp.dao.core.AbstractDao;
 import com.mycompany.webapp.dao.core.FlightDao;
 import com.mycompany.webapp.dao.core.PlaneDao;
 import com.mycompany.webapp.models.Flight;
-import com.mycompany.webapp.models.Passenger;
 import com.mycompany.webapp.models.Plane;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
 
 import javax.persistence.Query;
 import java.util.List;
-import java.util.Optional;
 
+@Repository
 public class PlaneDaoImpl extends AbstractDao<Plane> implements PlaneDao {
 
-    private FlightDao flightDao = new FlightDaoImpl();
+    private static final String NAMED_QUERY_PLANES_FOR_PASSENGERS = "findPlanesForPassenger";
+    private static final String LAST_NAME_FIELD = "lastName";
+    private static final String FIRST_NAME_FIELD = "firstName";
+
+    @Autowired
+    private FlightDao flightDao;
 
     public PlaneDaoImpl() {
         super(Plane.class);
@@ -23,9 +29,8 @@ public class PlaneDaoImpl extends AbstractDao<Plane> implements PlaneDao {
     @Override
     public void delete(Plane plane) {
 
-        if (Optional.ofNullable(plane.getFlights()).isPresent()) {
+        if (plane.getFlights() != null) {
             for (Flight flight : plane.getFlights()) {
-                super.entityManager.refresh(flight);
 
                 flight.getPlanes().remove(plane);
 
@@ -41,11 +46,11 @@ public class PlaneDaoImpl extends AbstractDao<Plane> implements PlaneDao {
     }
 
     @Override
-    public List<Plane> getPlanesForPassenger(Passenger passenger) {
+    public List<Plane> getPlanesForPassenger(String firstName, String lastName) {
         Query query = super.entityManager.createNamedQuery(NAMED_QUERY_PLANES_FOR_PASSENGERS);
 
-        query.setParameter(FIRST_NAME_FIELD, passenger.getFirstName());
-        query.setParameter(LAST_NAME_FIELD, passenger.getLastName());
+        query.setParameter(FIRST_NAME_FIELD, firstName);
+        query.setParameter(LAST_NAME_FIELD, lastName);
 
         return query.getResultList();
     }

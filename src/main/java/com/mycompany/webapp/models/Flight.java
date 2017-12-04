@@ -22,11 +22,11 @@ public class Flight {
     @Column(name = "flight_number", nullable = false)
     private String flightNumber;
 
-    @OneToMany(mappedBy = "flight", cascade = CascadeType.REMOVE, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "flight", cascade = CascadeType.REMOVE)
     @JsonIgnore
     private Set<Ticket> tickets = new HashSet<>();
 
-    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.REFRESH)
+    @ManyToMany(cascade = CascadeType.REFRESH, fetch = FetchType.EAGER)
     @JoinTable(
             name = "flights_planes",
             joinColumns = @JoinColumn(name = "flight_id", referencedColumnName = "id"),
@@ -71,6 +71,5 @@ public class Flight {
 
     public void setPlanes(Set<Plane> planes) {
         this.planes = planes;
-        planes.forEach(plane -> plane.getFlights().add(this));
     }
 }

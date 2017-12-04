@@ -1,19 +1,25 @@
 package com.mycompany.webapp.services.impl;
 
 import com.mycompany.webapp.dao.core.PlaneDao;
-import com.mycompany.webapp.dao.impl.PlaneDaoImpl;
-import com.mycompany.webapp.models.Passenger;
 import com.mycompany.webapp.models.Plane;
+import com.mycompany.webapp.services.ErrorMessages;
 import com.mycompany.webapp.services.core.AbstractService;
 import com.mycompany.webapp.services.core.ServicePlane;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
+@Service
+@Transactional
 public class ServicePlaneImpl extends AbstractService<Plane> implements ServicePlane {
 
-    private PlaneDao planeDao = new PlaneDaoImpl();
+    private PlaneDao planeDao;
 
-    public ServicePlaneImpl() {
+    @Autowired
+    public ServicePlaneImpl(PlaneDao planeDao) {
+        this.planeDao = planeDao;
         super.setCrudOperator(planeDao);
     }
 
@@ -27,8 +33,7 @@ public class ServicePlaneImpl extends AbstractService<Plane> implements ServiceP
     }
 
     @Override
-    public List<Plane> getPlanesForPassenger(Passenger passenger) {
-        return planeDao.getPlanesForPassenger(passenger);
+    public List<Plane> getPlanesByPassenger(String firstName, String lastName) {
+        return planeDao.getPlanesForPassenger(firstName, lastName);
     }
-
 }

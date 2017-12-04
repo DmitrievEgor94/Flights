@@ -2,76 +2,87 @@ package com.mycompany.webapp.controllers;
 
 import com.mycompany.webapp.models.Ticket;
 import com.mycompany.webapp.services.core.ServiceTicket;
-import com.mycompany.webapp.services.impl.ServiceTicketImpl;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.*;
 
-import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Response;
 import java.util.List;
 
-@Path("/tickets")
+@Controller
+@RequestMapping("/tickets")
 public class TicketController {
 
-    private ServiceTicket serviceTicket = new ServiceTicketImpl();
+    private ServiceTicket serviceTicket;
 
-    @PUT
-    @Consumes(MediaType.APPLICATION_JSON)
-    public Response update(Ticket ticket) {
+    @Autowired
+    private ApplicationContext applicationContext;
+
+    @Autowired
+    public TicketController(ServiceTicket serviceTicket) {
+        this.serviceTicket = serviceTicket;
+    }
+
+    @RequestMapping(method = RequestMethod.PUT, consumes = MediaType.APPLICATION_JSON)
+    @ResponseBody
+    public ResponseEntity update(@RequestBody Ticket ticket) {
         String updateMessage = serviceTicket.update(ticket);
 
-        if (updateMessage == null) {
-            return Response.status(Response.Status.OK).build();
-        } else {
-            return Response.status(Response.Status.BAD_REQUEST).entity(updateMessage).build();
-        }
+        return updateMessage == null ? null
+                : ResponseEntity.status(HttpStatus.BAD_REQUEST).body(updateMessage);
     }
 
-    @POST
-    public Response save(Ticket ticket) {
+    @RequestMapping(method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON)
+    @ResponseStatus(HttpStatus.CREATED)
+    @ResponseBody
+    public ResponseEntity save(@RequestBody Ticket ticket) {
         String saveMessage = serviceTicket.save(ticket);
 
-        if (saveMessage == null) {
-            return Response.status(Response.Status.CREATED).build();
-        } else {
-            return Response.status(Response.Status.BAD_REQUEST).entity(saveMessage).build();
-        }
+        return saveMessage == null ? null
+                : ResponseEntity.status(HttpStatus.BAD_REQUEST).body(saveMessage);
     }
 
-    @GET
-    @Path(value = "/{id}")
-    @Produces(MediaType.APPLICATION_JSON)
-    public Response get(@PathParam(value = "id") long id) {
-        if (serviceTicket.read(id) == null) {
-            return Response.status(Response.Status.NOT_FOUND).build();
-        } else {
-            return Response.status(Response.Status.OK).entity(serviceTicket.read(id)).build();
-        }
+    @RequestMapping(value = "/{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON)
+    @ResponseBody
+    public ResponseEntity get(@PathVariable(value = "id") Long id) {
+        Ticket ticket = serviceTicket.read(id);
+
+        return ticket == null ? new ResponseEntity(HttpStatus.NOT_FOUND)
+                : ResponseEntity.ok(ticket);
     }
 
-    @DELETE
-    @Path(value = "/{id}")
-    public Response delete(@PathParam(value = "id") long id) {
+    @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
+    @ResponseBody
+    public ResponseEntity delete(@PathVariable(value = "id") Long id) {
         serviceTicket.delete(id);
-        return Response.status(Response.Status.NO_CONTENT).build();
+        return new ResponseEntity(HttpStatus.NO_CONTENT);
     }
 
-    @GET
-    @Path("/amount")
-    public Response getNumberOfEntities() {
-        return Response.status(Response.Status.OK)
-                .entity(serviceTicket.getNumberOfEntities()).build();
+    @RequestMapping(value = "/amount", method = RequestMethod.GET)
+    @ResponseBody
+    public ResponseEntity getNumberOfEntities() {
+        return ResponseEntity.status(HttpStatus.OK)
+                .body(serviceTicket.getNumberOfEntities());
     }
 
-    @GET
-    @Path("/get")
-    @Produces(MediaType.APPLICATION_JSON)
-    public Response getList(@QueryParam("from") long firstId, @QueryParam("to") long lastId) {
+    @RequestMapping(value = "/get", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON)
+    @ResponseBody
+    public ResponseEntity getList(@RequestParam("from") Long firstId, @RequestParam("to") Long lastId) {
         List<Ticket> tickets = serviceTicket.readAll(firstId, lastId);
 
-        if (tickets.isEmpty()) {
-            return Response.status(Response.Status.NOT_FOUND).build();
-        }
-        return Response.status(Response.Status.OK)
-                .entity(tickets).build();
+        return tickets.isEmpty() ? new ResponseEntity(HttpStatus.NOT_FOUND)
+                : ResponseEntity.ok(tickets);
+    }
+
+    @RequestMapping(value = "/get-by-passenger", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON)
+    @ResponseBody
+    public ResponseEntity getPlanesByPassenger(@RequestParam("first-name") String firstName, @RequestParam("last-name") String lastName) {
+        List<Ticket> tickets = serviceTicket.getTicketsByPassenger(firstName, lastName);
+
+        return tickets.isEmpty() ? new ResponseEntity(HttpStatus.NOT_FOUND)
+                : ResponseEntity.ok(tickets);
     }
 }

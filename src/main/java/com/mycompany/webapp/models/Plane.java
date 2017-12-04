@@ -27,11 +27,11 @@ public class Plane {
     @Column(name = "plane_number", nullable = false)
     private String planeNumber;
 
-    @ManyToMany(mappedBy = "planes", fetch = FetchType.LAZY)
+    @ManyToMany(mappedBy = "planes")
     @JsonIgnore
     private Set<Flight> flights = new HashSet<>();
 
-    @OneToMany(mappedBy = "plane", cascade = {CascadeType.REFRESH, CascadeType.REMOVE}, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "plane", cascade = {CascadeType.REFRESH, CascadeType.REMOVE})
     @JsonIgnore
     private Set<Ticket> tickets = new HashSet<>();
 

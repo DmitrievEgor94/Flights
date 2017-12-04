@@ -4,11 +4,13 @@ package com.mycompany.webapp.dao.impl;
 import com.mycompany.webapp.dao.core.AbstractDao;
 import com.mycompany.webapp.dao.core.FlightDao;
 import com.mycompany.webapp.models.Flight;
-import com.mycompany.webapp.models.Plane;
+import org.springframework.stereotype.Repository;
 
 import javax.persistence.Query;
+import javax.transaction.Transactional;
 import java.util.List;
 
+@Repository
 public class FlightDaoImpl extends AbstractDao<Flight> implements FlightDao {
 
     private static final String CLASS_NAME = "Flight";
@@ -21,10 +23,11 @@ public class FlightDaoImpl extends AbstractDao<Flight> implements FlightDao {
     }
 
     @Override
-    public List<Flight> getFlightsOfPlane(Plane plane) {
+    @Transactional
+    public List<Flight> getFlightsOfPlane(String planeNumber) {
         Query query = super.entityManager.createQuery(JQPL_FLIGHTS_FOR_PLANE);
 
-        query.setParameter(1, plane.getPlaneNumber());
+        query.setParameter("planeNumber", planeNumber);
 
         return query.getResultList();
     }

@@ -28,7 +28,7 @@ public class Passenger {
     @Column(name = "last_name", nullable = false)
     private String lastName;
 
-    @OneToMany(mappedBy = "passenger", cascade = CascadeType.REMOVE, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "passenger", cascade = CascadeType.REMOVE)
     @JsonIgnore
     private Set<Ticket> tickets = new HashSet<>();
 

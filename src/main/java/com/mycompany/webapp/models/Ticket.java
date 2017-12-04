@@ -27,15 +27,15 @@ public class Ticket {
     @Column(name = "seat", nullable = false)
     private int seat;
 
-    @ManyToOne(cascade = CascadeType.REFRESH)
+    @ManyToOne(cascade = CascadeType.REFRESH, fetch = FetchType.EAGER)
     @JoinColumn(name = "plane_id", nullable = false)
     private Plane plane;
 
-    @ManyToOne(cascade = CascadeType.REFRESH)
+    @ManyToOne(cascade = CascadeType.REFRESH, fetch = FetchType.EAGER)
     @JoinColumn(name = "passenger_id", nullable = false)
     private Passenger passenger;
 
-    @ManyToOne(cascade = CascadeType.REFRESH)
+    @ManyToOne(cascade = CascadeType.REFRESH, fetch = FetchType.EAGER)
     @JoinColumn(name = "flight_id", nullable = false)
     private Flight flight;
 
@@ -78,7 +78,6 @@ public class Ticket {
 
     public void setPassenger(Passenger passenger) {
         this.passenger = passenger;
-        passenger.getTickets().add(this);
     }
 
     public Flight getFlight() {
@@ -87,8 +86,6 @@ public class Ticket {
 
     public void setFlight(Flight flight) {
         this.flight = flight;
-        flight.getTickets().add(this);
-
     }
 
     public Plane getPlane() {
@@ -97,7 +94,6 @@ public class Ticket {
 
     public void setPlane(Plane plane) {
         this.plane = plane;
-        plane.getTickets().add(this);
     }
 
     public long getCost() {

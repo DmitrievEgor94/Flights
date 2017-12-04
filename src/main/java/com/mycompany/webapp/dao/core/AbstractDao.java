@@ -1,8 +1,7 @@
 package com.mycompany.webapp.dao.core;
 
-import com.mycompany.webapp.source.Manager;
-
 import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
@@ -10,21 +9,21 @@ import java.util.List;
 
 public abstract class AbstractDao<T> implements CrudOperations<T> {
 
+    @PersistenceContext
     protected EntityManager entityManager;
+
     private Class entity;
+
     private String selectObjects;
 
     public AbstractDao(Class entity) {
         this.entity = entity;
         selectObjects = "SELECT ob" + " FROM " + entity.getSimpleName() + " ob " + "WHERE id BETWEEN  ";
-        entityManager = Manager.getEntityManager();
     }
 
     @Override
     public void save(T ob) {
-        entityManager.getTransaction().begin();
         entityManager.persist(ob);
-        entityManager.getTransaction().commit();
     }
 
     @Override
@@ -35,27 +34,17 @@ public abstract class AbstractDao<T> implements CrudOperations<T> {
 
     @Override
     public void update(T ob) {
-        entityManager.getTransaction().begin();
         entityManager.merge(ob);
-        entityManager.getTransaction().commit();
     }
 
     @Override
     public T findById(long id) {
-        Object ob = entityManager.find(entity, id);
-
-        if (ob != null) {
-            entityManager.refresh(ob);
-        }
-
-        return (T) ob;
+        return (T) entityManager.find(entity, id);
     }
 
     @Override
     public void delete(T ob) {
-        entityManager.getTransaction().begin();
         entityManager.remove(entityManager.contains(ob) ? ob : entityManager.merge(ob));
-        entityManager.getTransaction().commit();
     }
 
     @Override

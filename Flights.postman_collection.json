@@ -2,6 +2,7 @@
 	"info": {
 		"name": "Flights",
 		"_postman_id": "24f43966-4bed-3e45-fbea-179f85f8d8ed",
+		"description": "",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
 	"item": [
@@ -17,10 +18,10 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n    \"firstName\": \"Egor\",\n\t\"lastName\": \"Dmitriev\"\n}"
+					"raw": "{\n    \"firstName\": \"Egor\",\n    \"lastName\": \"Dmitriev\"\n}"
 				},
 				"url": {
-					"raw": "http://localhost:8080/newjersey/rest/passengers",
+					"raw": "http://localhost:8080/newjersey/passengers",
 					"protocol": "http",
 					"host": [
 						"localhost"
@@ -28,7 +29,6 @@
 					"port": "8080",
 					"path": [
 						"newjersey",
-						"rest",
 						"passengers"
 					]
 				}
@@ -50,7 +50,7 @@
 					"raw": "{\n    \"firstName\": \"Kirill\",\n\t\"lastName\": \"Denisov\"\n}"
 				},
 				"url": {
-					"raw": "http://localhost:8080/newjersey/rest/passengers",
+					"raw": "http://localhost:8080/newjersey/passengers",
 					"protocol": "http",
 					"host": [
 						"localhost"
@@ -58,7 +58,6 @@
 					"port": "8080",
 					"path": [
 						"newjersey",
-						"rest",
 						"passengers"
 					]
 				}
@@ -80,7 +79,7 @@
 					"raw": "{\n\t\"planeNumber\":\"XY123\"\n}"
 				},
 				"url": {
-					"raw": "http://localhost:8080/newjersey/rest/planes",
+					"raw": "http://localhost:8080/newjersey/planes",
 					"protocol": "http",
 					"host": [
 						"localhost"
@@ -88,7 +87,6 @@
 					"port": "8080",
 					"path": [
 						"newjersey",
-						"rest",
 						"planes"
 					]
 				}
@@ -110,7 +108,7 @@
 					"raw": "{\n\t\"planeNumber\":\"X2Y123\"\n}"
 				},
 				"url": {
-					"raw": "http://localhost:8080/newjersey/rest/planes",
+					"raw": "http://localhost:8080/newjersey/planes",
 					"protocol": "http",
 					"host": [
 						"localhost"
@@ -118,7 +116,6 @@
 					"port": "8080",
 					"path": [
 						"newjersey",
-						"rest",
 						"planes"
 					]
 				}
@@ -140,7 +137,7 @@
 					"raw": "{\n\t\"flightNumber\": \"123qwz\",\n\t\"planes\":[\n\t\t{\n\t\t\t\"id\": 1\n\t\t\n\t\t},\n\t\t{\n\t\t\t\"id\": 2\n\t\t}\n\t\t]\n}"
 				},
 				"url": {
-					"raw": "http://localhost:8080/newjersey/rest/flights",
+					"raw": "http://localhost:8080/newjersey/flights",
 					"protocol": "http",
 					"host": [
 						"localhost"
@@ -148,7 +145,6 @@
 					"port": "8080",
 					"path": [
 						"newjersey",
-						"rest",
 						"flights"
 					]
 				}
@@ -170,7 +166,7 @@
 					"raw": "{\n    \"date\": \"30.11.2017 10:01\",\n    \"cost\": 100,\n    \"seat\": 1,\n    \"plane\": {\n        \"id\": \"1\"\n    },\n    \"passenger\": {\n    \t\"id\": \"1\"\t\n    },\n    \"flight\": {\n        \"id\": \"1\"\n    }\n}"
 				},
 				"url": {
-					"raw": "http://localhost:8080/newjersey/rest/tickets",
+					"raw": "http://localhost:8080/newjersey/tickets",
 					"protocol": "http",
 					"host": [
 						"localhost"
@@ -178,7 +174,6 @@
 					"port": "8080",
 					"path": [
 						"newjersey",
-						"rest",
 						"tickets"
 					]
 				}
@@ -200,7 +195,7 @@
 					"raw": "{\n    \"date\": \"30.11.2017 10:01\",\n    \"cost\": 100,\n    \"seat\": 1,\n    \"plane\": {\n        \"id\": \"2\"\n    },\n    \"passenger\": {\n    \t\"id\": \"2\"\t\n    },\n    \"flight\": {\n        \"id\": \"1\"\n    }\n}"
 				},
 				"url": {
-					"raw": "http://localhost:8080/newjersey/rest/tickets",
+					"raw": "http://localhost:8080/newjersey/tickets",
 					"protocol": "http",
 					"host": [
 						"localhost"
@@ -208,7 +203,6 @@
 					"port": "8080",
 					"path": [
 						"newjersey",
-						"rest",
 						"tickets"
 					]
 				}
@@ -220,12 +214,9 @@
 			"request": {
 				"method": "GET",
 				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": ""
-				},
+				"body": {},
 				"url": {
-					"raw": "http://localhost:8080/newjersey/rest/tickets/1",
+					"raw": "http://localhost:8080/newjersey/tickets/1",
 					"protocol": "http",
 					"host": [
 						"localhost"
@@ -233,7 +224,6 @@
 					"port": "8080",
 					"path": [
 						"newjersey",
-						"rest",
 						"tickets",
 						"1"
 					]
@@ -256,7 +246,7 @@
 					"raw": "{\n    \"id\": 1,\n    \"date\": \"30.11.2017 12:01\",\n    \"cost\": 300,\n    \"seat\": 1,\n    \"plane\": {\n        \"id\": 1\n    },\n    \"passenger\": {\n        \"id\": 1\n    },\n    \"flight\": {\n        \"id\": 1\n    }\n}"
 				},
 				"url": {
-					"raw": "http://localhost:8080/newjersey/rest/tickets",
+					"raw": "http://localhost:8080/newjersey/tickets",
 					"protocol": "http",
 					"host": [
 						"localhost"
@@ -264,7 +254,6 @@
 					"port": "8080",
 					"path": [
 						"newjersey",
-						"rest",
 						"tickets"
 					]
 				}
@@ -286,7 +275,7 @@
 					"raw": ""
 				},
 				"url": {
-					"raw": "http://localhost:8080/newjersey/rest/tickets/1",
+					"raw": "http://localhost:8080/newjersey/tickets/1",
 					"protocol": "http",
 					"host": [
 						"localhost"
@@ -294,7 +283,6 @@
 					"port": "8080",
 					"path": [
 						"newjersey",
-						"rest",
 						"tickets",
 						"1"
 					]
@@ -307,12 +295,9 @@
 			"request": {
 				"method": "GET",
 				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": ""
-				},
+				"body": {},
 				"url": {
-					"raw": "http://localhost:8080/newjersey/rest/tickets/amount",
+					"raw": "http://localhost:8080/newjersey/tickets/amount",
 					"protocol": "http",
 					"host": [
 						"localhost"
@@ -320,7 +305,6 @@
 					"port": "8080",
 					"path": [
 						"newjersey",
-						"rest",
 						"tickets",
 						"amount"
 					]
@@ -335,7 +319,7 @@
 				"header": [],
 				"body": {},
 				"url": {
-					"raw": "http://localhost:8080/newjersey/rest/planes/get?from=2&to=3",
+					"raw": "http://localhost:8080/newjersey/planes/get?from=1&to=3",
 					"protocol": "http",
 					"host": [
 						"localhost"
@@ -343,14 +327,13 @@
 					"port": "8080",
 					"path": [
 						"newjersey",
-						"rest",
 						"planes",
 						"get"
 					],
 					"query": [
 						{
 							"key": "from",
-							"value": "2",
+							"value": "1",
 							"equals": true
 						},
 						{
@@ -360,6 +343,130 @@
 						}
 					]
 				}
+			},
+			"response": []
+		},
+		{
+			"name": "get passengers with several tickets",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"url": {
+					"raw": "http://localhost:8080/newjersey/passengers/get-with-several-tickets/",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"newjersey",
+						"passengers",
+						"get-with-several-tickets",
+						""
+					]
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "get flights by plane",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"url": {
+					"raw": "http://localhost:8080/newjersey/flights/get-by-plane?plane-number=XY123",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"newjersey",
+						"flights",
+						"get-by-plane"
+					],
+					"query": [
+						{
+							"key": "plane-number",
+							"value": "XY123",
+							"equals": true
+						}
+					]
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "get planes by passenger",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"url": {
+					"raw": "http://localhost:8080/newjersey/planes/get-by-passenger?first-name=Egor&last-name=Dmitriev",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"newjersey",
+						"planes",
+						"get-by-passenger"
+					],
+					"query": [
+						{
+							"key": "first-name",
+							"value": "Egor",
+							"equals": true
+						},
+						{
+							"key": "last-name",
+							"value": "Dmitriev",
+							"equals": true
+						}
+					]
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "get tickets by passenger",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"url": {
+					"raw": "http://localhost:8080/newjersey/tickets/get-by-passenger?first-name=Egor&last-name=Dmitriev",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"newjersey",
+						"tickets",
+						"get-by-passenger"
+					],
+					"query": [
+						{
+							"key": "first-name",
+							"value": "Egor",
+							"equals": true
+						},
+						{
+							"key": "last-name",
+							"value": "Dmitriev",
+							"equals": true
+						}
+					]
+				},
+				"description": ""
 			},
 			"response": []
 		}
