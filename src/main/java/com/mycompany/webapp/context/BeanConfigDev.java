@@ -13,10 +13,10 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 @ComponentScan(basePackages = {"com.mycompany.webapp.dao.impl",
         "com.mycompany.webapp.services.impl", "com.mycompany.webapp.controllers"})
 @EnableTransactionManagement
+@Profile("dev")
 public class BeanConfigDev {
 
     @Bean
-    @Profile("dev")
     public LocalContainerEntityManagerFactoryBean entityManagerFactoryInMemoryDB() {
         LocalContainerEntityManagerFactoryBean thing = new LocalContainerEntityManagerFactoryBean();
         thing.setPersistenceUnitName("dev");
@@ -24,7 +24,6 @@ public class BeanConfigDev {
     }
 
     @Bean
-    @Profile("dev")
     public JpaTransactionManager transactionManagerPostgresDB() {
         JpaTransactionManager transactionManager = new JpaTransactionManager();
         transactionManager.setEntityManagerFactory(entityManagerFactoryInMemoryDB().getNativeEntityManagerFactory());

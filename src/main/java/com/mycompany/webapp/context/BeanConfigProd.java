@@ -14,10 +14,10 @@ import org.springframework.web.servlet.config.annotation.EnableWebMvc;
         "com.mycompany.webapp.services.impl", "com.mycompany.webapp.controllers"})
 @EnableWebMvc
 @EnableTransactionManagement
+@Profile("prod")
 public class BeanConfigProd {
 
     @Bean
-    @Profile("prod")
     public LocalContainerEntityManagerFactoryBean entityManagerFactoryPostgres() {
         LocalContainerEntityManagerFactoryBean thing = new LocalContainerEntityManagerFactoryBean();
         thing.setPersistenceUnitName("prod");
@@ -25,7 +25,6 @@ public class BeanConfigProd {
     }
 
     @Bean
-    @Profile("prod")
     public JpaTransactionManager transactionManagerInMemoryDB()
     {
         JpaTransactionManager transactionManager = new JpaTransactionManager();
